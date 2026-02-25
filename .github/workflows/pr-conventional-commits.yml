@@ -4,6 +4,9 @@ on:
   pull_request_target:
     types: [opened, edited, synchronize]
 
+permissions:
+  pull-requests: write
+
 jobs:
   build:
     name: Conventional Commits
@@ -11,3 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: webiny/action-conventional-commits@v1.3.1
+      - name: Close PR on conventional commits failure
+        if: failure()
+        uses: peter-evans/close-pull@v3
