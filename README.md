@@ -11,7 +11,8 @@ For more details, visit the project's [website](https://jod35.github.io/fastapi-
 3. [Project Setup](#project-setup)
 4. [Running the Application](#running-the-application)
 5. [Running Tests](#running-tests)
-6. [Contributing](#contributing)
+6. [CI Workflows](#ci-workflows)
+7. [Contributing](#contributing)
 
 ## Getting Started
 Follow the instructions below to set up and run your FastAPI project.
@@ -64,7 +65,7 @@ Ensure you have the following installed:
 Start the application:
 
 ```bash
-fastapi dev src/
+uvicorn src.main:app --reload
 ```
 Alternatively, you can run the application using Docker:
 ```bash
@@ -75,6 +76,26 @@ Run the tests using this command
 ```bash
 pytest
 ```
+
+## CI Workflows
+- PRs must use Conventional Commits; non-compliant PRs are automatically closed and an email notification is sent.
+- Nightly builds run on a schedule (and can be triggered manually), execute tests, build the Docker image, push to `ghcr.io/nishoof/fastapi-beyond-crud:nightly`, and send a failure email when the workflow fails.
+
+### CI Secrets
+The workflows rely on the following GitHub Actions secrets:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `JWT_ALGORITHM`
+- `REDIS_URL`
+- `MAIL_USERNAME`
+- `MAIL_PASSWORD`
+- `MAIL_FROM`
+- `MAIL_PORT`
+- `MAIL_SERVER`
+- `MAIL_FROM_NAME`
+- `EMAIL_TO`
+- `DOMAIN`
 
 ## Contributing
 I welcome contributions to improve the documentation! You can contribute [here](https://github.com/jod35/fastapi-beyond-crud-docs).
