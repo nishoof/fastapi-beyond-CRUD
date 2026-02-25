@@ -13,7 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: webiny/action-conventional-commits@v1.3.1
+
       - name: Close PR on conventional commits failure
         if: failure()
         uses: peter-evans/close-pull@v3
+
+      - name: Send email on conventional commits failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.ETHEREAL_SMTP_HOST }}
+          server_port: ${{ secrets.ETHEREAL_SMTP_PORT }}
+          username: ${{ secrets.ETHEREAL_SMTP_USERNAME }}
+          password: ${{ secrets.ETHEREAL_SMTP_PASSWORD }}
+          subject: "PR closed: conventional commits check failed"
+          to: ${{ secrets.PR_COMMITS_FAILURE_EMAIL_TO }}
+          from: ${{ secrets.ETHEREAL_SMTP_USERNAME }}
+          body: |
+            Conventional commits check failed for PR #${{ github.event.pull_request.number }}.
+            Title: ${{ github.event.pull_request.title }}
+            Author: ${{ github.event.pull_request.user.login }}
+            URL: ${{ github.event.pull_request.html_url }}
