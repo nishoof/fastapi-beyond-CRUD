@@ -24,13 +24,13 @@ jobs:
         if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: ${{ secrets.ETHEREAL_SMTP_HOST }}
-          server_port: ${{ secrets.ETHEREAL_SMTP_PORT }}
-          username: ${{ secrets.ETHEREAL_SMTP_USERNAME }}
-          password: ${{ secrets.ETHEREAL_SMTP_PASSWORD }}
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
           subject: "PR closed: conventional commits check failed"
-          to: ${{ secrets.PR_COMMITS_FAILURE_EMAIL_TO }}
-          from: ${{ secrets.ETHEREAL_SMTP_USERNAME }}
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.MAIL_USERNAME }}
           body: |
             Conventional commits check failed for PR #${{ github.event.pull_request.number }}.
             Title: ${{ github.event.pull_request.title }}
